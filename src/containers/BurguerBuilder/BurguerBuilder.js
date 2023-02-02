@@ -21,7 +21,8 @@ class BurguerBuilder extends Component {
             cheese: 0,
         },
         totalPrice: 4,
-        purchasable: false
+        purchasable: false,
+        purchasing: false
     }
 
     updatePurchaseState = (ingredients) =>{
@@ -68,6 +69,16 @@ class BurguerBuilder extends Component {
         this.updatePurchaseState(updateIgredients);
     }
 
+    purchasingHandler = () =>{
+        this.setState({purchasing: true})
+    }
+    purchaseCancelHander = () =>{
+        this.setState({purchasing: false})
+    }
+    purchaseContinueHandler = () =>{
+        alert('Purchase continued sucessfuly!')
+    }
+
     render() {
         const disabledInfo = {...this.state.ingredients};
         for(let key in disabledInfo){
@@ -77,16 +88,22 @@ class BurguerBuilder extends Component {
         return(
             <Auxiliary>
                 <Burger ingredients={this.state.ingredients} />
+
                 <BuildControls 
                     ingredientAdded={this.addIngredientHandler}
                     ingredientRemoved={this.removeIgredientHandler}
                     disabledInfo={disabledInfo}
                     price={this.state.totalPrice}
-                    purchasable={this.state.purchasable}/>
+                    purchasable={this.state.purchasable}
+                    ordered={this.purchasingHandler}/>
 
-                <Modal>
-                    <OrderSummary ingredients={this.state.ingredients}/>
+                <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHander}>
+                    <OrderSummary ingredients={this.state.ingredients}
+                        purchaseCancelled={this.purchaseCancelHander}
+                        purchaseContinued={this.purchaseContinueHandler}
+                        price={this.state.totalPrice}/>
                 </Modal>
+
             </Auxiliary>
         )
     }
