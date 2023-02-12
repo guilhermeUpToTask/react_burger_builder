@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../src/axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-
+import withRouter from "../../hoc/withRouter/withRouter";
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -84,7 +84,7 @@ class BurguerBuilder extends Component {
         this.setState({ purchasing: false })
     }
     purchaseContinueHandler = () => {
-        this.setState({ loading: true });
+       /* this.setState({ loading: true });
 
         const order = {
             ingredients: this.state.ingredients,
@@ -108,7 +108,18 @@ class BurguerBuilder extends Component {
             .catch((error) => {
                 console.log(error);
                 this.setState({ purchasing: false, loading: false })
-            })
+            })*/
+
+        const queryParams = []
+        for (let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        const queryString = queryParams.join('&');
+
+        this.props.router.navigate({
+            pathname:'/checkout',
+            search:'?'+queryString
+        });       
     }
 
     render() {
@@ -156,4 +167,4 @@ class BurguerBuilder extends Component {
     }
 }
 
-export default withErrorHandler(BurguerBuilder, axios);
+export default withErrorHandler(withRouter(BurguerBuilder), axios);

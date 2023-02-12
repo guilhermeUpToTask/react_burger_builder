@@ -3,6 +3,7 @@ import Auxiliary from "../Auxiliary/Auxiliary";
 import classes from "./Layout.css"
 import ToolBar from "../../components/Navigation/ToolBar/ToolBar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
+import { Outlet } from "react-router-dom";
 
 class Layout extends Component {
     state={
@@ -20,7 +21,7 @@ class Layout extends Component {
             <ToolBar toggleDrawer={this.ToggleSideDrawerHandler}/>
             <SideDrawer showDrawer={this.state.showSideDrawer} toggleDrawer={this.ToggleSideDrawerHandler}/>
             <main className={classes.Content}>
-                {this.props.children}
+                <Outlet/>
             </main>
         </Auxiliary>
     )}
